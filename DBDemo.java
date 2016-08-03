@@ -17,12 +17,20 @@ public class DBDemo
     private Statement statement = null;
     private ResultSet resultSet = null;    
    
+    /**
+     * Constructor which initializes the connection and statement objects.
+     * Connects using the username/password given as parameters by the user.
+     * 
+     * @param dbUserName The username that will be used for the connection attempt.
+     * @param dbUserPassword The password for the username in the database.
+     */
     public DBDemo(String dbUserName, String dbUserPassword)
     {
         try
         {
-            //establish connection
-            //initialize statement
+            Class.forName("com.mysql.jdbc.Driver"); //This is so you don't have to use fully qualified names. Not required for connection.
+            connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/JDBCDemo", dbUserName, dbUserPassword);
+            statement = connect.createStatement();
         } 
         catch (Exception e)
         {
