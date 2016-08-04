@@ -4,10 +4,12 @@ import java.sql.*;
 import java.util.Scanner;
 
 /**
- * A simple class to access/update a local mySQL database.
+ * A simple class to access a local mySQL database.
  * 
- * It connects to the database, and reads out the results of the 'People' table.
+ * It connects to the database and reads out the results of the 'People' table.
  * The purpose is to teach myself how to use JDBC.
+ * 
+ * I will add additional methods to learn more about adding records, updating values, and removing rows in the future.
  *
  * @author Bill Casey
  */
@@ -70,6 +72,30 @@ public class DBDemo
         }
     }
     
+    /**
+     * Call to close and release resources from JDBC instances.
+     * If they are not null, calls the close methods on the following fields
+     *      connect
+     *      statement
+     *      resultSet
+     */
+    private void close()
+    {
+        try
+        {
+            if(connect != null)
+                connect.close();
+            if(statement != null)
+                statement.close();
+            if(resultSet != null)
+                resultSet.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
     public static void main(String[] args)
     {
         System.out.println("Enter password for DB Username \"bill\"");
@@ -84,7 +110,10 @@ public class DBDemo
         {
             e.printStackTrace();
         }
-        
-        kb.close();
+        finally //Close the JDBC connections and close the scanner
+        {
+            dbd.close();
+            kb.close();
+        }
     }
 }
