@@ -32,23 +32,39 @@ public class DBDemo
             connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/JDBCDemo", dbUserName, dbUserPassword);
             statement = connect.createStatement();
         } 
-        catch (Exception e)
+        catch (Exception e) //Catch more specific exceptions? Or just read the stack trace?
         {
             e.printStackTrace();
         }
     }
     
-    public void readDatabase() throws Exception 
+    /**
+     * Selects all rows from the People table in the JDBCDemo Database.
+     * The database only has one table. The only columns in that table are fName and lName.
+     */
+    public void readDatabase()
     {
-        //Connect to the database with credentials
         try
         {
-            //create query
-            //execute query
+            String query = "SELECT fName, lName FROM People;"; //Could have also used SELECT *
+            resultSet = statement.executeQuery(query);
             
-            //while loop to print the results
+            //Print the query for reference, and print the column labels.
+            System.out.println("\n" + query);
+            System.out.println("Row\tFirst Name\tLast Name");
+            
+            //Print the rows
+            while(resultSet.next()) //.next iterates through the result set.
+            {
+                System.out.print(
+                        resultSet.getRow() + "\t" +
+                        resultSet.getString("fName") + "\t\t" + 
+                        resultSet.getString("lName") + "\n");
+                //.getRow() returns the row's number, not the entire row itself. 
+                //.getString() accepts either an integer for the column index, or the label of the column.
+            }
         }
-        catch (Exception e)
+        catch (Exception e) //Catch more specific exceptions? Or just read the stack trace?
         {
             e.printStackTrace();
         }
